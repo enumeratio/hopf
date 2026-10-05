@@ -1,0 +1,35 @@
+name: Release
+
+# On a v<version> tag: build, pack, and attach the tarball to a GitHub release. Hosts depend on
+# the release asset's URL, which installs without a token and builds nothing on install.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  release:
+    name: build, pack and release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: pnpm install
+      - run: pnpm run build
+      - run: pnpm exec vp test
+      - name: the tag is the version
+        run: test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+      - run: pnpm pack
+      - run: gh release create "$GITHUB_REF_NAME" enumeratio-hopf-*.tgz --title "$GITHUB_REF_NAME" --notes "Install from this release's asset."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

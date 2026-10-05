@@ -1,6 +1,6 @@
 {
   "name": "@enumeratio/hopf",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Combinatorial Hopf algebra extensions for @cortex-js/compute-engine: NSym and QSym on compositions, with product, coproduct and antipode.",
   "license": "WTFPL",
