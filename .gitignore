@@ -1,2 +1,4 @@
-# Written by `build` (@enumeratio/manifest's scripts/collect-notation.ts); never committed.
+node_modules/
+dist/
+# Written by the build (enumeratio-collect-notation); never committed.
 src/notation.generated.ts
